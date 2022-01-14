@@ -12,9 +12,9 @@ A configuration file provides the mapping from timezone names to timezone values
 The compression is done in a very simple way. The floating numbers are converted to an integer
 format with a specified precision. Then for each polygon only the first value is stored. All following
 points are stored as difference to the previous point. To save space, the difference is stored as
-one byte for values between -127 and 127. The value of -128 is reserved as marker that there are follows
-bytes for longer values. So values between -32767 and 32767 are stored with a beginning marker and
-then 16 Bits for the value. Values bigger than 32767 habe two marker bytes and then 32 Bits for the 
+one byte for values between -127 and 126. The values -128 and 127 are reserved as marker that there are following
+bytes for longer values. So values between -32768 and 32767 are stored with a beginning marker 0x80 and
+then two bytes for the value. Bigger values use the marker 0x7F and then 4 bytes for the 
 value.
 
 This works because statistically most values are in the smallest range:
