@@ -22,3 +22,6 @@ This works because statistically most values are in the smallest range:
 - Total deltas small: 10568754
 - Total deltas medium: 1629492
 - Total deltas large: 638
+
+Before generating the database, the shapefile must be downloaded. This is done with the maven goal download:wget
+Then just start the main class. The output file is storde in the target directory under  

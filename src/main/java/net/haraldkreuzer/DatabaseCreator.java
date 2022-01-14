@@ -13,6 +13,9 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -185,15 +188,21 @@ public class DatabaseCreator {
         ClassLoader classLoader = getClass().getClassLoader();
 
         ByteBuffer buffer = timezoneDatabase.generateBuffer();
-        File outputFile = new File(classLoader.getResource("output/timezones.bin").getFile());
+
 
         try {
-            if (outputFile.mkdirs() && outputFile.createNewFile()) {
+
+            File outputFolder = new File(this.getClass().getResource("/").getPath() + "output/");
+            outputFolder.mkdirs();
+
+            File outputFile = new File(outputFolder, "timezones.bin");
+            if (outputFile.createNewFile()) {
 
                 FileChannel wChannel = new FileOutputStream(outputFile, false).getChannel();
                 wChannel.write(buffer);
                 wChannel.close();
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
