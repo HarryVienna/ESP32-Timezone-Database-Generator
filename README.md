@@ -26,3 +26,6 @@ This works because statistically most values are in the smallest range:
 Before generating the database, the shapefile must be downloaded. This is done with the maven goal **download:wget**
 Then just start the main class. The output file is stored in the target directory under **target\classes\output\\** 
 
+You can find a detailed description on my [website](https://www.haraldkreuzer.net/en/news/esp32-library-offline-time-zone-search-given-gps-coordinates).
+
+
