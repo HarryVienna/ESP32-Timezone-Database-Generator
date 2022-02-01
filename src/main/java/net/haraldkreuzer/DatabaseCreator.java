@@ -67,7 +67,6 @@ public class DatabaseCreator {
         // Create database object
         LocalDate creationDate = LocalDate.now();
 
-        Integer totalValues = 0;
         TimezoneDatabase timezoneDatabase = new TimezoneDatabase();
         Header header = new Header();
         header.setSignature(SIGNATURE);
@@ -148,7 +147,6 @@ public class DatabaseCreator {
                     Integer prev_coorY = null;
                     Integer prev_coorX = null;
                     for (Coordinate coordinate : coordinates) {
-                        totalValues++;
 
                         Integer coorY = floatToFixedPoint(coordinate.getY(), 90, PRECISION);
                         Integer coorX = floatToFixedPoint(coordinate.getX(), 180, PRECISION);
@@ -156,7 +154,7 @@ public class DatabaseCreator {
                         if (prev_coorY == null && prev_coorX == null) { // First point in polygon
                             shape.setStart(new Point(coorY, coorX));
                         }
-                        else if (coorX.equals(prev_coorY) && coorY.equals(prev_coorX)){ // Same value, ignore
+                        else if (coorX.equals(prev_coorX) && coorY.equals(prev_coorY)){ // Same value, ignore
                             continue;
                         }
                         else {
@@ -184,9 +182,6 @@ public class DatabaseCreator {
 
     public void storeData(TimezoneDatabase timezoneDatabase) {
 
-
-        ClassLoader classLoader = getClass().getClassLoader();
-
         ByteBuffer buffer = timezoneDatabase.generateBuffer();
 
 
@@ -196,6 +191,7 @@ public class DatabaseCreator {
             outputFolder.mkdirs();
 
             File outputFile = new File(outputFolder, "timezones.bin");
+            outputFile.delete();
             if (outputFile.createNewFile()) {
 
                 FileChannel wChannel = new FileOutputStream(outputFile, false).getChannel();

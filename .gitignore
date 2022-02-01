@@ -23,7 +23,6 @@
 hs_err_pid*
 /.idea/
 /target/
-/src/main/resources/timezones.shapefile/combined-shapefile.dbf
-/src/main/resources/timezones.shapefile/combined-shapefile.prj
-/src/main/resources/timezones.shapefile/combined-shapefile.shp
-/src/main/resources/timezones.shapefile/combined-shapefile.shx
+/src/main/resources/timezones.shapefile/combined-shapefile.*
+/tz-database.log.*.gz
+/tz-database-debug.log.*.gz

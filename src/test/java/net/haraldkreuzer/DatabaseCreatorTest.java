@@ -26,8 +26,10 @@ public class DatabaseCreatorTest {
 
 
         // Statistik
+        Integer totalCountries = 0;
+        Integer totalShapes = 0;
+        Integer maxDelta = 0;
         Integer totalDeltas = 0;
-        Integer totalDeltasVerySmall = 0;
         Integer totalDeltasSmall = 0;
         Integer totalDeltasSMedium = 0;
         Integer totalDeltasLarge = 0;
@@ -36,37 +38,43 @@ public class DatabaseCreatorTest {
 
 
         for (Country country: countryList) {
+            totalCountries++;
             List<Shape> shapeList = country.getShapeList();
             for(Shape shape:shapeList) {
+                totalShapes++;
                 List<Delta> deltaList = shape.getDeltaList();
                 if (deltaList.size() > maxPolygenLength) {
                     maxPolygenLength = deltaList.size();
                     maxPolygenCountry = country.getTimezoneName();
+                    LOGGER.debug(maxPolygenCountry + " " + maxPolygenLength);
                 }
                 for (Delta delta: deltaList) {
                     //writerLength.print(delta.getDeltaLatitude() + " ");
                     //writerWidth.print(delta.getDeltalongitude() + " ");
 
                     totalDeltas += 2;
-                    if (Math.abs(delta.getDeltaLatitude()) <= 7 ) {
-                        totalDeltasVerySmall++;
+                    if (Math.abs(delta.getDeltaLatitude()) > maxDelta ) {
+                        maxDelta = Math.abs(delta.getDeltaLatitude());
                     }
-                    if (Math.abs(delta.getDeltalongitude()) <= 7 ) {
-                        totalDeltasVerySmall++;
+                    if (Math.abs(delta.getDeltalongitude()) > maxDelta ) {
+                        maxDelta = Math.abs(delta.getDeltalongitude());
                     }
-                    if (Math.abs(delta.getDeltaLatitude()) > 7 && Math.abs(delta.getDeltaLatitude()) <= 127 ) {
+
+                    if (Math.abs(delta.getDeltaLatitude()) <= 127 ) {
                         totalDeltasSmall++;
                     }
-                    if (Math.abs(delta.getDeltalongitude()) > 7 && Math.abs(delta.getDeltalongitude()) <= 127 ) {
+                    if (Math.abs(delta.getDeltalongitude()) <= 127 ) {
                         totalDeltasSmall++;
                     }
-                    if (Math.abs(delta.getDeltaLatitude()) > 127 &&  Math.abs(delta.getDeltaLatitude()) < 65536) {
+
+                    if (Math.abs(delta.getDeltaLatitude()) > 127 &&  Math.abs(delta.getDeltaLatitude()) < 32767) {
                         totalDeltasSMedium++;
                     }
-                    if (Math.abs(delta.getDeltalongitude()) > 127 &&  Math.abs(delta.getDeltalongitude()) < 65536) {
+                    if (Math.abs(delta.getDeltalongitude()) > 127 &&  Math.abs(delta.getDeltalongitude()) < 32767) {
                         totalDeltasSMedium++;
                     }
-                    if (Math.abs(delta.getDeltaLatitude()) >= 65536 ) {
+
+                    if (Math.abs(delta.getDeltaLatitude()) >= 32767 ) {
                         totalDeltasLarge++;
                     }
                     if (Math.abs(delta.getDeltalongitude()) >= 65536 ) {
@@ -80,8 +88,10 @@ public class DatabaseCreatorTest {
         //writerWidth.close();
 
         //LOGGER.debug("Total values: {}", totalValues * 2);
+        LOGGER.debug("Total countries: {}", totalCountries);
+        LOGGER.debug("Total shapes: {}", totalShapes);
+        LOGGER.debug("Max delta: {}", maxDelta);
         LOGGER.debug("Total deltas: {}", totalDeltas);
-        LOGGER.debug("Total deltas very small: {}", totalDeltasVerySmall);
         LOGGER.debug("Total deltas small: {}", totalDeltasSmall);
         LOGGER.debug("Total deltas medium: {}", totalDeltasSMedium);
         LOGGER.debug("Total deltas large: {}", totalDeltasLarge);
